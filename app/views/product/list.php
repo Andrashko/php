@@ -7,6 +7,10 @@
                 value="price_DESC">від дорожчих до дешевших
         </option>
     </select>
+    <input type="submit" value="Submit">
+
+</form>
+<form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
     <select name='sortsecond'>
         <option <?php echo filter_input(INPUT_POST, 'sortsecond') === 'qty_ASC' ? 'selected' : ''; ?> value="qty_ASC">по
             зростанню кількості
@@ -24,6 +28,32 @@
 
 <?php
 $products =  $this->get('products');
+if(isset($_POST['sortfirst']))
+{
+    if($_POST['sortfirst'] == "price_ASC")
+    {
+        $price = array_column($products, 'price');
+        array_multisort($price, SORT_ASC, $products);
+    }
+    elseif ($_POST['sortfirst'] == "price_DESC")
+    {
+        $price = array_column($products, 'price');
+        array_multisort($price, SORT_DESC, $products);
+    }
+}
+if(isset($_POST['sortsecond']))
+{
+    if ($_POST['sortsecond'] == 'qty_ASC')
+    {
+        $qty = array_column($products, 'qty');
+        array_multisort($qty, SORT_ASC, $products);
+    }
+    elseif ($_POST['sortsecond'] == 'qty_DESC')
+    {
+        $qty = array_column($products, 'qty');
+        array_multisort($qty, SORT_DESC, $products);
+    }
+}
 
 foreach($products as $product)  :
 ?>
